@@ -596,7 +596,7 @@ namespace avmshell
         const char* line;
         HistEvent ev;
 
-        el = el_init( "redshell", stdin, stdout, stderr );
+        el = el_init( "as3h", stdin, stdout, stderr );
 
         el_set( el, EL_PROMPT, &libedit_prompt );
         el_set( el, EL_EDITOR, "emacs" );

@@ -37,7 +37,7 @@
 
 PROGRAMS += shell
 
-shell_BASENAME = redshell
+shell_BASENAME = as3h
 shell_INCLUDES = -I$(srcdir) -I$(topsrcdir)/extensions -I$(topsrcdir)/api/clib -I$(topsrcdir)/api/shell
 shell_DEFINES = -DAVMPLUS_SHELL
 shell_STATIC_LIBRARIES = zlib MMgc avmplus vmbase
