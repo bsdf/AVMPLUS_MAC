@@ -566,10 +566,10 @@ namespace avmshell
 #ifdef AVMPLUS_MAC
     const char* get_term_prompt() {
         if ( strcmp( rl_terminal_name, "dumb" ) == 0 ) {
-            return "as3h> ";
+            return "~as3h> ";
         }
         else {
-            return "\x1b[4mas3h\x1b[m> ";
+            return "\x1b[32m~\x1b[m\x1b[4mas3h\x1b[m> ";
         }
     }
 #endif
