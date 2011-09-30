@@ -69,7 +69,7 @@ namespace avmshell
         , filenames(NULL)
         , numfiles(-1)
         , do_selftest(false)
-        , do_repl(false)
+        , do_repl(true)
         , do_log(false)
         , do_projector(false)
         , numthreads(1)
