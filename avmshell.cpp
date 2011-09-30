@@ -586,8 +586,17 @@ namespace avmshell
         char commandLine[kMaxCommandLine];
         String* input;
 
-        AvmLog("avmplus interactive shell\n"
-               "Type '?' for help\n\n");
+        AvmLog("\n"
+        "            eeee                                 \n"
+        "eeeee eeeee    8    eeeee e   e eeee e     e     \n"
+        "8   8 8   \"    8    8   \" 8   8 8    8     8     \n"
+        "8eee8 8eeee eee8    8eeee 8eee8 8eee 8e    8e    \n"
+        "88  8    88    88      88 88  8 88   88    88    \n"
+        "88  8 8ee88 eee88   8ee88 88  8 88ee 88eee 88eee \n\n");
+
+        AvmLog("the as3 shell.\n"
+               "type '?' for help\n\n");
+
 
 #ifdef AVMPLUS_MAC
         EditLine *el;
