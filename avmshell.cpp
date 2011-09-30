@@ -606,9 +606,9 @@ namespace avmshell
 #ifdef AVMPLUS_MAC
             line = el_gets( el, &count );
 
-            std::strncpy( commandLine, line, kMaxCommandLine );
 
-            if( count > 0 ) {
+            if ( line != NULL && count > 0 ) {
+                std::strncpy( commandLine, line, kMaxCommandLine );
                 history( myhistory, &ev, H_ENTER, line );
             }
             else return;
