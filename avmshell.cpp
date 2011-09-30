@@ -604,8 +604,7 @@ namespace avmshell
             bool record_time = false;
 
 #ifdef AVMPLUS_MAC
-            char *line;
-            line = readline( term_prompt );
+            char *line = readline( term_prompt );
 
             if ( !line )
                 return;
