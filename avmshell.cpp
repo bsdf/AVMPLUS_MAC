@@ -41,6 +41,12 @@
 #ifdef VMCFG_NANOJIT
 #include "../nanojit/nanojit.h"
 #endif
+
+#ifdef AVMPLUS_MAC
+#include <histedit.h>
+#include <cstring>
+#endif
+
 #include <float.h>
 
 #include "avmplus-gc-interlock.h"
@@ -557,6 +563,12 @@ namespace avmshell
 
 #endif  // VMCFG_WORKERTHREADS
 
+#ifdef AVMPLUS_MAC
+    const char* libedit_prompt(EditLine *e) {
+        return "> ";
+    }
+#endif
+
 #ifdef VMCFG_EVAL
 
     /* static */
@@ -569,13 +581,44 @@ namespace avmshell
         AvmLog("avmplus interactive shell\n"
                "Type '?' for help\n\n");
 
+#ifdef AVMPLUS_MAC
+        EditLine *el;
+        History  *myhistory;
+        int count;
+        const char* line;
+        HistEvent ev;
+
+        el = el_init( "redshell", stdin, stdout, stderr );
+
+        el_set( el, EL_PROMPT, &libedit_prompt );
+        el_set( el, EL_EDITOR, "emacs" );
+
+        myhistory = history_init();
+        history( myhistory, &ev, H_SETSIZE, 800 );
+
+        el_set( el, EL_HIST, history, myhistory );
+#endif
+
         for (;;)
         {
             bool record_time = false;
+
+#ifdef AVMPLUS_MAC
+            line = el_gets( el, &count );
+
+            std::strncpy( commandLine, line, kMaxCommandLine );
+
+            if( count > 0 ) {
+                history( myhistory, &ev, H_ENTER, line );
+            }
+            else return;
+
+#else
             AvmLog("> ");
 
             if(Platform::GetInstance()->getUserInput(commandLine, kMaxCommandLine) == NULL)
                 return;
+#endif
 
             commandLine[kMaxCommandLine-1] = 0;
             if (VMPI_strncmp(commandLine, "?", 1) == 0) {
@@ -631,6 +674,12 @@ namespace avmshell
         compute:
             shellCore->evaluateString(input, record_time);
         }
+
+#ifdef AVMPLUS_MAC
+        history_end( myhistory );
+        el_end( el );
+#endif
+
     }
 
 #endif // VMCFG_EVAL

@@ -81,6 +81,7 @@ shell_CXXSRCS := $(shell_CXXSRCS) \
 endif
 
 ifeq (darwin,$(TARGET_OS))
+shell_STATIC_LIBRARIES += edit curses
 shell_CXXSRCS := $(shell_CXXSRCS) \
   $(curdir)/avmshellMac.cpp \
   $(curdir)/PosixFile.cpp \
