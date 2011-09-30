@@ -565,7 +565,15 @@ namespace avmshell
 
 #ifdef AVMPLUS_MAC
     const char* libedit_prompt(EditLine *e) {
-        return "\x1b[4mas3h\x1b[m> ";
+        const char *term_type;
+        el_get( e, EL_TERMINAL, &term_type );
+
+        if ( strcmp( term_type, "dumb" ) == 0 ) {
+            return "as3h> ";
+        }
+        else {
+            return "\x1b[4mas3h\x1b[m> ";
+        }
     }
 #endif
 
