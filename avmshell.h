@@ -154,6 +154,10 @@ namespace avmshell
     void handleAOT(AvmCore*, Domain*, DomainEnv*, Toplevel*, CodeContext*);
 #endif
 
+#ifdef AVMPLUS_MAC
+    const char *get_term_prompt();
+#endif
+
     class ShellSettings : public ShellCoreSettings
     {
     public:

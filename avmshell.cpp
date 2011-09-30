@@ -43,8 +43,8 @@
 #endif
 
 #ifdef AVMPLUS_MAC
-#include <histedit.h>
-#include <cstring>
+#include <readline/readline.h>
+#include <readline/history.h>
 #endif
 
 #include <float.h>
@@ -564,11 +564,8 @@ namespace avmshell
 #endif  // VMCFG_WORKERTHREADS
 
 #ifdef AVMPLUS_MAC
-    const char* libedit_prompt(EditLine *e) {
-        const char *term_type;
-        el_get( e, EL_TERMINAL, &term_type );
-
-        if ( strcmp( term_type, "dumb" ) == 0 ) {
+    const char* get_term_prompt() {
+        if ( strcmp( rl_terminal_name, "dumb" ) == 0 ) {
             return "as3h> ";
         }
         else {
@@ -597,23 +594,9 @@ namespace avmshell
         AvmLog("the as3 shell.\n"
                "type '?' for help\n\n");
 
-
 #ifdef AVMPLUS_MAC
-        EditLine *el;
-        History  *myhistory;
-        int count;
-        const char* line;
-        HistEvent ev;
-
-        el = el_init( "as3h", stdin, stdout, stderr );
-
-        el_set( el, EL_PROMPT, &libedit_prompt );
-        el_set( el, EL_EDITOR, "emacs" );
-
-        myhistory = history_init();
-        history( myhistory, &ev, H_SETSIZE, 800 );
-
-        el_set( el, EL_HIST, history, myhistory );
+        rl_initialize();
+        const char* term_prompt = get_term_prompt();
 #endif
 
         for (;;)
@@ -621,15 +604,15 @@ namespace avmshell
             bool record_time = false;
 
 #ifdef AVMPLUS_MAC
-            line = el_gets( el, &count );
+            char *line;
+            line = readline( term_prompt );
 
+            if ( !line )
+                return;
 
-            if ( line != NULL && count > 0 ) {
-                std::strncpy( commandLine, line, kMaxCommandLine );
-                history( myhistory, &ev, H_ENTER, line );
-            }
-            else return;
-
+            add_history( line );
+            VMPI_strncpy( commandLine, line, kMaxCommandLine );
+            free(line);
 #else
             AvmLog("> ");
 
@@ -693,8 +676,8 @@ namespace avmshell
         }
 
 #ifdef AVMPLUS_MAC
-        history_end( myhistory );
-        el_end( el );
+//        history_end( myhistory );
+//        el_end( el );
 #endif
 
     }
