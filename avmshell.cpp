@@ -565,7 +565,7 @@ namespace avmshell
 
 #ifdef AVMPLUS_MAC
     const char* libedit_prompt(EditLine *e) {
-        return "> ";
+        return "\x1b[4mas3h\x1b[m> ";
     }
 #endif
 
