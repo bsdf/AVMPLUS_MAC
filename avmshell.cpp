@@ -674,12 +674,6 @@ namespace avmshell
         compute:
             shellCore->evaluateString(input, record_time);
         }
-
-#ifdef AVMPLUS_MAC
-//        history_end( myhistory );
-//        el_end( el );
-#endif
-
     }
 
 #endif // VMCFG_EVAL
